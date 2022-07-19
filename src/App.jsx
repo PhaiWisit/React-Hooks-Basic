@@ -1,61 +1,38 @@
-import { useState, createContext, useContext } from 'react'
+import { useState, createContext, useContext,useRef, useEffect } from 'react'
 import reactLogo from './assets/react.svg'
 import './App.css'
 
-const UserContext = createContext();
-
 function App() {
-  const [user, setUser] = useState("Wisit");
+  const [inputValue, setInputValue] = useState("");
+  const previousInputValue = useRef("");
+
+  useEffect(()=>{
+    previousInputValue.current = inputValue;
+  },[inputValue]);
+
   return (
-    <UserContext.Provider value={user}>
-      <h1>Parent Component</h1>
-      <ChildComponent1></ChildComponent1>
-    </UserContext.Provider>
+    <div className='App'>
+     <input type="text" value={inputValue} onChange={(e)=> setInputValue(e.target.value)}></input>
+     <h2>Current Value : {inputValue}</h2>
+     <h2>Previous Value : {previousInputValue.current}</h2>
+     
+    </div>
   )
 }
 
-function ChildComponent1() {
-  return (
-    <>
-      <h3>Child Component 1</h3>
-      <ChildComponent2/>
-    </>
-  )
-}
-function ChildComponent2() {
-  return (
-    <>
-      <h3>Child Component 2</h3>
-      <ChildComponent3/>
-    </>
-  )
-}
-function ChildComponent3() {
-  return (
-    <>
-      <h3>Child Component 3</h3>
-      <ChildComponent4/>
-    </>
-  )
-}
-function ChildComponent4() {
-  return (
-    <>
-      <h3>Child Component 4</h3>
-      <ChildComponent5/>
-    </>
-  )
-}
-function ChildComponent5() {
+// function App() {
+//   const inputElement = useRef();
+//   const focusInput = () => {
+//     inputElement.current.focus();
+//   }
 
-  const user = useContext(UserContext);
-
-  return (
-    <>
-      <h3>Child Component 5</h3>
-      <p>Hello {user}</p>
-    </>
-  )
-}
+//   return (
+//     <div className='App'>
+//      <input type="text" ref={inputElement}></input>
+//      <button onClick={focusInput}> Focus </button>
+     
+//     </div>
+//   )
+// }
 
 export default App

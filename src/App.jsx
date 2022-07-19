@@ -3,30 +3,29 @@ import reactLogo from './assets/react.svg'
 import './App.css'
 
 function App() {
-  const [count, setCount] = useState(0)
+  const [count, setCount] = useState(0);
+  const [name, setName] = useState('Phai');
+  const [data, setData] = useState([]);
+
+  fetch("https://jsonplaceholder.typicode.com/users")
+  .then(res => res.json())
+  .then(data => setData(data));
+
+  console.log(data); //useState จะ log เรื่อย ๆ จน catch
 
   return (
     <div className="App">
-      <div>
-        <a href="https://vitejs.dev" target="_blank">
-          <img src="/vite.svg" className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://reactjs.org" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React + Test</h1>
+      <h1>Hello {name}</h1>
+      <button onClick={() => setName('Wisit')}> Update Name </button>
+      <h3>{count}</h3>
       <div className="card">
         <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
+          Increase
         </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
+        <button onClick={() => setCount((count) => count - 1)}>
+          Decrease
+        </button>
       </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
     </div>
   )
 }

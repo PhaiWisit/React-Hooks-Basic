@@ -1,34 +1,60 @@
-import { useState, useEffect } from 'react'
+import { useState, createContext, useContext } from 'react'
 import reactLogo from './assets/react.svg'
 import './App.css'
 
+const UserContext = createContext();
+
 function App() {
-  const [count, setCount] = useState(0);
-  const [name, setName] = useState('Phai');
-  const [data, setData] = useState([]);
+  const [user, setUser] = useState("Wisit");
+  return (
+    <UserContext.Provider value={user}>
+      <h1>Parent Component</h1>
+      <ChildComponent1></ChildComponent1>
+    </UserContext.Provider>
+  )
+}
 
-  useEffect(() => {
-    fetch(`https://jsonplaceholder.typicode.com/users/${count}`)
-      .then(res => res.json())
-      .then(data => setData(data));
-  }, [count]);
+function ChildComponent1() {
+  return (
+    <>
+      <h3>Child Component 1</h3>
+      <ChildComponent2/>
+    </>
+  )
+}
+function ChildComponent2() {
+  return (
+    <>
+      <h3>Child Component 2</h3>
+      <ChildComponent3/>
+    </>
+  )
+}
+function ChildComponent3() {
+  return (
+    <>
+      <h3>Child Component 3</h3>
+      <ChildComponent4/>
+    </>
+  )
+}
+function ChildComponent4() {
+  return (
+    <>
+      <h3>Child Component 4</h3>
+      <ChildComponent5/>
+    </>
+  )
+}
+function ChildComponent5() {
 
-  console.log(data);
+  const user = useContext(UserContext);
 
   return (
-    <div className="App">
-      <h1>Hello {name}</h1>
-      <button onClick={() => setName('Wisit')}> Update Name </button>
-      <h3>{count}</h3>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          Increase
-        </button>
-        <button onClick={() => setCount((count) => count - 1)}>
-          Decrease
-        </button>
-      </div>
-    </div>
+    <>
+      <h3>Child Component 5</h3>
+      <p>Hello {user}</p>
+    </>
   )
 }
 

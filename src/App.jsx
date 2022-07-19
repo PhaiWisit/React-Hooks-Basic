@@ -1,38 +1,46 @@
-import { useState, createContext, useContext,useRef, useEffect } from 'react'
+import { useState, createContext, useContext, useRef, useEffect, useReducer } from 'react'
 import reactLogo from './assets/react.svg'
 import './App.css'
 
-function App() {
-  const [inputValue, setInputValue] = useState("");
-  const previousInputValue = useRef("");
+const initialTodos = [
+  { id: 1, title: "Todo 1", complete: false },
+  { id: 2, title: "Todo 2", complete: false }
+]
 
-  useEffect(()=>{
-    previousInputValue.current = inputValue;
-  },[inputValue]);
+const reducer = (state,action) => {
+  switch(action.type){
+    case "COMPLETE":
+      return state.map((todo)=>{
+        if (todo.id === action.id) {
+          return {...todo, complete: !todo.complete}
+        }else{
+          return todo;
+        }
+      })
+      default:
+        return state;
+  }
+}
+
+function App() {
+  
+  const [todos, dispatch] = useReducer(reducer, initialTodos);
+
+  const handleComplete = (todo) => {
+    dispatch({type: "COMPLETE",id:todo.id});
+  }
 
   return (
     <div className='App'>
-     <input type="text" value={inputValue} onChange={(e)=> setInputValue(e.target.value)}></input>
-     <h2>Current Value : {inputValue}</h2>
-     <h2>Previous Value : {previousInputValue.current}</h2>
-     
+      {todos.map((todo)=>(
+        <div key={todo.id}>
+          <input type = "checkbox" checked={todo.complete} onChange={()=>handleComplete(todo)}></input>
+          {todo.title}
+        </div>
+      ))}
     </div>
   )
 }
 
-// function App() {
-//   const inputElement = useRef();
-//   const focusInput = () => {
-//     inputElement.current.focus();
-//   }
-
-//   return (
-//     <div className='App'>
-//      <input type="text" ref={inputElement}></input>
-//      <button onClick={focusInput}> Focus </button>
-     
-//     </div>
-//   )
-// }
 
 export default App

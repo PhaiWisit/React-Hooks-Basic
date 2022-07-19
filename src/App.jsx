@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import reactLogo from './assets/react.svg'
 import './App.css'
 
@@ -7,11 +7,13 @@ function App() {
   const [name, setName] = useState('Phai');
   const [data, setData] = useState([]);
 
-  fetch("https://jsonplaceholder.typicode.com/users")
-  .then(res => res.json())
-  .then(data => setData(data));
+  useEffect(() => {
+    fetch(`https://jsonplaceholder.typicode.com/users/${count}`)
+      .then(res => res.json())
+      .then(data => setData(data));
+  }, [count]);
 
-  console.log(data); //useState จะ log เรื่อย ๆ จน catch
+  console.log(data);
 
   return (
     <div className="App">
